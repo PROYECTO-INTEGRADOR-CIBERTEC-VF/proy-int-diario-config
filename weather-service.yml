@@ -1,1 +1,71 @@
+spring:
+  application:
+    name: weather-service
 
+# Puerto del servidor
+server:
+  port: 8083
+
+# Configuración de Eureka Client
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:8761/eureka/
+    register-with-eureka: true
+    fetch-registry: true
+  instance:
+    prefer-ip-address: true
+    instance-id: ${spring.application.name}:${server.port}
+
+weather:
+  api:
+
+    base-url: https://api.openweathermap.org/data/2.5
+    api-key: 5eb28bef339e91f831d730063b3239db 
+    timeout: 5000
+    default-units: metric  # metric = Celsius, imperial = Fahrenheit
+    default-lang: es
+
+# Configuración de Resilience4j (Circuit Breaker)
+resilience4j:
+  circuitbreaker:
+    instances:
+      weatherApi:
+        registerHealthIndicator: true
+        slidingWindowSize: 10
+        minimumNumberOfCalls: 5
+        permittedNumberOfCallsInHalfOpenState: 3
+        automaticTransitionFromOpenToHalfOpenEnabled: true
+        waitDurationInOpenState: 10s
+        failureRateThreshold: 50
+  
+  retry:
+    instances:
+      weatherApi:
+        maxAttempts: 3
+        waitDuration: 1s
+
+  timelimiter:
+    instances:
+      weatherApi:
+        timeoutDuration: 5s
+
+# Actuator endpoints
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info,metrics,circuitbreakers
+  endpoint:
+    health:
+      show-details: always
+  health:
+    circuitbreakers:
+      enabled: true
+
+# Logging
+logging:
+  level:
+    root: INFO
+    com.huisa: INFO
+    org.springframework.web.client: DEBUG
