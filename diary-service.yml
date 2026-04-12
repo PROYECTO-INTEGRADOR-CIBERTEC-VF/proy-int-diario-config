@@ -43,7 +43,7 @@ management:
 logging:
   level:
     root: INFO
-    com.huisa: INFO
+    com.cibertec: INFO
     org.hibernate.SQL: WARN
 
 springdoc:
