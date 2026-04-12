@@ -51,7 +51,7 @@ management:
 # Logging
 logging:
   level:
-    com.huisa: DEBUG
+    com.cibertec: DEBUG
     org.springframework.security: DEBUG
     org.hibernate.SQL: DEBUG
     org.hibernate.type.descriptor.sql.BasicBinder: TRACE
