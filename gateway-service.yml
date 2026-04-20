@@ -22,6 +22,24 @@ spring:
                 - Path=/diary-service/**
               filters:
                 - StripPrefix=1
+            - id: currency-service
+              uri: lb://currency-service
+              predicates:
+                - Path=/currency-service/**
+              filters:
+                - StripPrefix=1
+            - id: country-service 
+              uri: lb://country-service 
+              predicates:
+                - Path=/country-service/**
+              filters:
+                - StripPrefix=1
+             - id: weather-service 
+              uri: lb://weather-service 
+              predicates:
+                - Path=/weather-service/**
+              filters:
+                - StripPrefix=1
 eureka:
   client:
     service-url:
